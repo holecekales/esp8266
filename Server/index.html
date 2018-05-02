@@ -205,12 +205,12 @@
         elem = document.querySelector('#fileList');
         elem.addEventListener('click', (ev) => {
             var x = ev.target.nodeName;
-            if(x != 'A')
-                return;
-            var debug = document.querySelector("#dump");
-            load(ev.target.href, cb);
-            function cb(r) {
-                editor.getSession().setValue(r);
+            if (x == 'A') {
+                var debug = document.querySelector("#dump");
+                load(ev.target.href, cb);
+                function cb(r) {
+                    editor.getSession().setValue(r);
+                }
             }
             ev.preventDefault();
         });
