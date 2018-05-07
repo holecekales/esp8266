@@ -21,6 +21,7 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 * Would be also coll to have some kind of a REPL for later exploits
 * UI for the entire thing
 * Should probably implement authentication
+* Clean up the namespace. Don't know abotu the upload and uploads. Something has to give.
 
 
 
