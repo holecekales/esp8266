@@ -11,39 +11,82 @@
 
         ::-webkit-scrollbar-thumb {
             border-radius: 4px;
-            background-color: rgba(128, 128, 128, .5);
+            background-color: rgba(46, 45, 45, 0.493);
             box-shadow: 0 0 1px rgba(255, 255, 255, .5);
         }
 
         body {
-            background-color: lightgray;
+            margin: 0px;
+            height: 100%;
             font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+        }
+
+        .box {
+            background-color: #444;
+            color: #fff;
+            width: 100%;
+            height: 100%;
+        }
+
+        .header {
+            padding-left: 20px;
+            grid-area: header;
+            background-color: rgb(1, 64, 83);
+            font-size: 200%;
+            display: flex;
+            align-items: center;
+        }
+
+        .tools {
+            grid-area: tools;
+            position: relative;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            position: absolute;
+        }
+
+        .content {
+            grid-area: content;
+        }
+
+        .fooder {
+            grid-area: fooder;
+            padding-left: 20px;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 150px auto;
+            grid-template-rows: 50px max-content auto 30px;
+            grid-template-areas: "header header" "tools content" "sidebar content" "fooder fooder";
+            grid-gap: 2px;
+            background-color: #777;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
         }
 
         #editor {
             position: relative;
-            height: 400px;
-            width: 800px;
+            height: 100%;
+            width: 100%;
             overflow: hidden;
-            display: inline-block;
-            vertical-align: top;
+            display: block;
         }
 
         #fileListContainer {
-            width: 200px;
-            height: 400px;
+            width: 100%;
+            height: 100%;
             /* float: left; add this */
-            display: inline-block;
+            display: block;
             position: relative;
             overflow-y: auto;
             overflow-x: hidden;
-            /* Stops scrolling immediately */
-            border: 1px solid rgb(50, 50, 50);
-            background-color: darkgray
-        }
-
-        #fileList {
-            width: 200px;
+            background-color: rgb(143, 142, 142)
         }
 
         /* Overwrite the default to keep the scrollbar always visible */
@@ -53,7 +96,7 @@
         }
 
         .custom-file-upload {
-            border: 1px solid black;
+            /* border: 1px solid black; */
             display: inline-block;
             padding: 6px 12px;
             cursor: pointer;
@@ -89,20 +132,20 @@
 
     <script>
         function getFileList(fl) {
-
             var productList = JSON.parse(fl);
             var ul = document.querySelector('#fileList');
             while (ul.firstChild) {
                 ul.removeChild(ul.firstChild);
             }
             productList.forEach((elemName) => {
-                var li = document.createElement('li');
-                // li.setAttribute('class', 'item');
-                var a = document.createElement("a");
-                a.setAttribute('href', elemName.url);
-                a.innerHTML = elemName.name;
-                li.appendChild(a);
-                ul.appendChild(li);
+                for (var i = 0; i < 4; i++) {
+                    var li = document.createElement('li');
+                    var a = document.createElement("a");
+                    a.setAttribute('href', elemName.url);
+                    a.innerHTML = elemName.name;
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                }
             });
         }
 
@@ -128,36 +171,47 @@
 
 <body>
 
-    <form enctype="multipart/form-data" method="post" name="fileUploader">
-        <label class="custom-file-upload">
-            <input type="file" name="file" multiple/>Upload
-        </label>
-    </form>
-
-    <select id="mode" size="1">
-        <option value="ace/mode/css">css</option>
-        <option value="ace/mode/html">html</option>
-        <option value="ace/mode/ini">ini</option>
-        <option value="ace/mode/javascript" selected>javascript</option>
-        <option value="ace/mode/json">json</option>
-        <option value="ace/mode/markdown">markdown</option>
-        <option value="ace/mode/svg">svg</option>
-        <option value="ace/mode/text">text</option>
-        <option value="ace/mode/typescript">typescript</option>
-    </select>
-
-    <button id="load">Load</button>
-
-    <div id="ide">
-        <div id="fileListContainer">
-            <ul id="fileList">
-            </ul>
+    <div class="wrapper">
+        <div class="box header">Header</div>
+        
+        <div class="box tools">
+        
+            <form enctype="multipart/form-data" method="post" name="fileUploader">
+                <label class="custom-file-upload">
+                    <input type="file" name="file" multiple/>Add New
+                </label>
+            </form>
+<!--            
+            <select id="mode" size="1">
+                <option value="ace/mode/css">css</option>
+                <option value="ace/mode/html">html</option>
+                <option value="ace/mode/ini">ini</option>
+                <option value="ace/mode/javascript" selected>javascript</option>
+                <option value="ace/mode/json">json</option>
+                <option value="ace/mode/markdown">markdown</option>
+                <option value="ace/mode/svg">svg</option>
+                <option value="ace/mode/text">text</option>
+                <option value="ace/mode/typescript">typescript</option>
+            </select>
+            <button id="load">Load</button>
+        -->            
         </div>
-        <div id="editor">function foo(items) { var x = "All this is syntax highlighted"; return x; }</div>
-    </div>
 
-    <div id="dump">
+        <div class="box sidebar">
+            <div id="fileListContainer">
+                <ul id="fileList">
+                </ul>
+            </div>
 
+        </div>
+
+        <div class="box content">
+            <div id="editor">function foo(items) { var x = "All this is syntax highlighted"; return x; }</div>
+        </div>
+
+        <div class="box fooder">
+            <div id="dump"></div>
+        </div>
     </div>
 
     <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -191,6 +245,7 @@
         // editor.setTheme("ace/theme/twilight");
         editor.getSession().setMode("ace/mode/javascript");
 
+/*
         var elem = document.getElementById('mode');
         elem.addEventListener("change", (ev) => {
             var mode = ev.target.value;
@@ -201,7 +256,7 @@
         elem.addEventListener('click', (ev) => {
             editor.getSession().setValue("text");
         });
-
+*/
         elem = document.querySelector('#fileList');
         elem.addEventListener('click', (ev) => {
             var x = ev.target.nodeName;

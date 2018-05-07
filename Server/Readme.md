@@ -22,6 +22,13 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 * UI for the entire thing
 * Should probably implement authentication
 * Clean up the namespace. Don't know abotu the upload and uploads. Something has to give.
+* attach the click events to the anchor node and not the container - dumb
+* figure out the right color scheme for the side and the editor so the scroll bar is visible on both
+* make up roll over as well as selection in the file list
+* fix the horizontal scroll bar
+* test on edge and chrome
+* make a save button
+
 
 
 
