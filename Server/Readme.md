@@ -17,6 +17,10 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 * Hook up the ePaper display and learn to talk to it
 * Investigate again Monaco
 * It would be cool to remember more of the state
+* Implement page which shows the state of the device (only if useful)
+* Would be also coll to have some kind of a REPL for later exploits
+* UI for the entire thing
+* Should probably implement authentication
 
 
 
