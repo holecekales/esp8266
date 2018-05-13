@@ -3,76 +3,43 @@
 
 <head>
   <style>
-    body {
-      margin: 0px;
-      height: 100%;
-      font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    #nav-bar ul {
+      float: left;
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
-    .box {
-      background-color: #444;
-      color: #fff;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
+    #nav-bar ul li {
+      display: inline;
     }
 
-    .header {
-      padding-left: 20px;
-      grid-area: header;
-      background-color: rgb(1, 64, 83);
-      font-size: 200%;
+    #nav-bar ul li a {
+      display: inline;
+      padding: 0 10px;
+      color: #EDEDED;
+      text-decoration: none;
     }
 
-    .tools {
-      grid-area: tools;
-      font-size: 120%;
+    #nav-bar ul li a:hover {
+      color: #AAAAAA;
     }
 
-    .sidebar {
-      grid-area: sidebar;
-    }
-
-    .content {
-      grid-area: content;
-    }
-
-    .fooder {
-      grid-area: fooder;
-      padding-left: 20px;
-    }
-
-    .wrapper {
-      display: grid;
-      grid-template-columns: 200px auto;
-      grid-template-rows: 50px max-content auto 30px;
-      grid-template-areas: "header header" "tools content" "sidebar content" "fooder fooder";
-      grid-gap: 2px;
-      background-color: #777;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
+    #nav-bar ul li#selected a {
+      /* this changes color of the menu item of current page */
+      color: #AAAAAA;
     }
   </style>
 </head>
 
 <body>
-  <div class="wrapper">
-    <div class="box header">Hi Header</div>
-    <div class="box tools">Tools and some more tools</div>
-    <div class="box sidebar">Sidebar</div>
-    <div class="box content">
-      Content
-      <br> Content
-      <br> Content
-      <br> Content
-      <br>
+    <div id="nav-bar">
+        <ul>
+          <li id="selected"><a href="page1.html">Home</a></li>
+          <li><a href="page2.html">Page2</a></li>
+          <li><a href="page3.html">Page3</a></li>
+        </ul>
     </div>
-    <div class="box fooder">something else</div>
-  </div>
 </body>
 
 </html>
