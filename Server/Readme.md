@@ -4,13 +4,10 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 
 ## ToDo:
 
-* Make sure that the notition of selection is represented in the list
 * Implement deletion of files
 * Make sure that the core files can't be deleted (or modified)
-* Detect the extension of the file and swicth the editor language
 * Upon upload, remember the name of the file and select it automatically
 * Implement saving
-* Remove the need for the horizontal scrollbar for the editor
 * Merge the git repos with the one with the actual ESP8266 code
 * Add image of the pin out to the readme
 * Hook up the ePaper display and learn to talk to it
@@ -21,8 +18,6 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 * UI for the entire thing - for this i think i will need some graphig library or something. 
 * Should probably implement authentication
 * Clean up the namespace. Don't know abotu the upload and uploads. Something has to give.
-* Attach the click events to the anchor node and not the container - dumb
-* make up roll over as well as selection in the file list
 * test on edge and chrome
 
 
