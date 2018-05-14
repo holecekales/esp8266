@@ -7,6 +7,11 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 ### File manipulation
 * Delete file 
 * Save file
+### UX
+* Add tabs to the top for more secctions of the UI
+* Figure out the status bar (smaller and sections)
+* Show when the file is dirty with a dot
+* Shrink to and bottom sections
 ### State Management 
 * Core files can't be deleted (or modified)
 * Pre-select file after upload 
@@ -17,6 +22,7 @@ This is very simple prototype for editing HTML/JS/CSS files that will run on ESP
 * Add image of the pin out to the readme
 ### Hardware
 * Hook up the ePaper display and learn to talk to it
+* Figure out how to update OTA 
 ### Other
 * Investigate again Monaco
 * Implement page which shows the state of the device (only if useful)

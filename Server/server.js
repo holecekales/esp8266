@@ -36,9 +36,9 @@ app.post('/upload', function (req, res) {
         var old_path = files.file.path;
         var file_size = files.file.size;
         var file_ext = files.file.name.split('.').pop();
-        var index = old_path.lastIndexOf('/') + 1;
+        var index = old_path.lastIndexOf(path.sep) + 1;
         var file_name = old_path.substr(index);
-        var new_path = path.join(process.env.PWD, __dirname + '/uploads/', files.file.name);
+        var new_path = path.join(__dirname, '/uploads/', files.file.name);
 
         fs.readFile(old_path, function (err, data) {
             fs.writeFile(new_path, data, function (err) {
