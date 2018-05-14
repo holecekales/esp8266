@@ -8,24 +8,45 @@ var app = express();
 
 var port = 8080;
 
-app.get('/', (req, res) => {
-    res.status(200).sendFile(__dirname + '/index.html');
-});
-
-app.get('/upload', (req, res) => {
+function dirList() 
+{
     const folder = __dirname + '/uploads/';
     var fileList = [];
     fs.readdirSync(folder).forEach(file => {
         var fileObj = { 'name': file, 'url': '/uploads/' + file };
         fileList.push(fileObj);
     });
-    res.status(200).json(fileList);
+    return fileList;
+}
+
+app.get('/', (req, res) => {
+    res.status(200).sendFile(__dirname + '/index.html');
+});
+
+app.get('/upload', (req, res) => {
+    res.status(200).json(dirList());
 });
 
 app.get('/uploads/:file', (req, res) => {
     var fp = path.join(__dirname, '/uploads/', req.params.file);
     console.log(fp);
     res.status(200).sendFile(fp);
+});
+
+app.put('/uploads/:file', function (req, res) {
+    var fp = path.join(__dirname, '/uploads/', req.params.file);
+    console.log("updating: " + fp);
+
+    var data = "Hellow world"; // req.body
+
+    fs.writeFile(fp, data, (err) => {
+        if (err) {
+            res.status(500);
+            res.json({ 'success': false });
+        } else {
+            res.status(200).json(dirList());
+        }
+    });
 });
 
 // Upload route.
@@ -47,8 +68,7 @@ app.post('/upload', function (req, res) {
                         res.status(500);
                         res.json({ 'success': false });
                     } else {
-                        res.status(200);
-                        res.json({ 'success': true });
+                        res.status(200).json(dirList());
                     }
                 });
             });

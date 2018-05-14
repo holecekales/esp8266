@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-<title>File Upload</title>
+
+w
 
 <head>
+    <title>File Upload</title>
     <style>
         ::-webkit-scrollbar {
             -webkit-appearance: none;
@@ -40,6 +42,8 @@
         .tools {
             grid-area: tools;
             position: relative;
+            display: flex;
+            justify-content: space-between;
         }
 
         .sidebar {
@@ -100,11 +104,15 @@
             display: none;
         }
 
-        .custom-file-upload {
+        .toolButton {
             /* border: 1px solid black; */
             display: inline-block;
-            padding: 6px 12px;
+            padding: 6px 6px;
             cursor: pointer;
+        }
+
+        .toolButton:hover {
+            background-color: #580207;
         }
 
         ul {
@@ -145,17 +153,33 @@
         function setActive(activeElem) {
             var elems = document.querySelectorAll('#fileList li a');
             elems.forEach((e) => {
-                if(e == activeElem)
+                if (e == activeElem) {
                     e.classList.add("active");
+                    var i = e.href.lastIndexOf('.');
+                    var ext = i < 0 ? "" : e.href.substr(i + 1);
+
+                    if (ext == "" || ext == "txt") ext = "text";
+                    else if (ext == 'md') ext = 'markdown';
+                    else if (ext == "js") ext = 'javascript';
+                    else if (ext == 'ts') ext = 'typescript';
+                    else if (ext == 'ino' ||
+                        ext == 'c' ||
+                        ext == 'h' ||
+                        ext == 'cpp') ext = 'c_cpp';
+
+                    editor.getSession().setMode("ace/mode/" + ext);
+                    var debug = document.querySelector("#dump");
+                    debug.innerHTML = "Mode: " + ext + "      " + e.href;
+                }
                 else
                     e.classList.remove("active");
             });
         }
         function listClick(ev) {
-            load(ev.target.href, (r) => {
+            HTTPReq(ev.target.href, (r) => {
                 editor.getSession().setValue(r);
+                setActive(ev.target);
             });
-            setActive(ev.target);
             ev.preventDefault();
         }
 
@@ -176,7 +200,7 @@
             });
         }
 
-        function load(url, callback) {
+        function HTTPReq(url, callback, method = 'GET', data = '') {
             var xhr = new XMLHttpRequest();
             var debug = document.querySelector("#dump");
             xhr.onreadystatechange = () => {
@@ -184,27 +208,12 @@
                     if (xhr.status == 200) { }
                     else
                         debug.innerHTML += " -- Error " + xhr.status;
-
-                    callback(xhr.response);
+                    if (callback != null)
+                        callback(xhr.response);
                 }
             }
-            xhr.open('GET', url, true);
-            xhr.send('');
-
-            var i = url.lastIndexOf('.');
-            var ext = i < 0 ? "" : url.substr(i + 1);
-
-            if (ext == "" || ext == "txt") ext = "text";
-            else if (ext == 'md') ext = 'markdown';
-            else if (ext == "js") ext = 'javascript';
-            else if (ext == 'ts') ext = 'typescript';
-            else if (ext == 'ino'|| 
-                     ext == 'c'  || 
-                     ext == 'h'  || 
-                     ext == 'cpp') ext = 'c_cpp';
-
-            editor.getSession().setMode("ace/mode/" + ext);
-            debug.innerHTML = "Mode: " + ext + "      " + url;
+            xhr.open(method, url, true);
+            xhr.send(data);
         }    
     </script>
 
@@ -216,12 +225,13 @@
         <div class="box header">ESP8266 Console</div>
 
         <div class="box tools">
-
             <form enctype="multipart/form-data" method="post" name="fileUploader">
-                <label class="custom-file-upload">
-                    <input type="file" name="file" multiple/>Add New
+                <label class="toolButton">
+                    <input type="file" name="file" multiple/>Add
                 </label>
             </form>
+            <label class="toolButton">Delete</label>
+            <label class="toolButton">Save</label>
         </div>
 
         <div class="box sidebar">
@@ -246,22 +256,9 @@
         // form submission
         var form = document.forms.namedItem("fileUploader");
         form.addEventListener('change', (ev) => {
-            var oOutput = document.querySelector("#dump"),
-                oData = new FormData(form);
-
-            oData.append("CustomField", "This is some extra data");
-
-            var oReq = new XMLHttpRequest();
-            oReq.open("POST", "/upload", true);
-            oReq.onload = function (oEvent) {
-                if (oReq.status == 200) {
-                    oOutput.innerHTML = "Uploaded!";
-                    load('/upload', getFileList);
-                }
-                else
-                    oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
-            };
-            oReq.send(oData);
+            var data = new FormData(form);
+            // HTTPReq('/upload', ()=>{ HTTPReq('/upload', getFileList); }, 'POST', data);
+            HTTPReq('/upload', getFileList, 'POST', data);
             ev.preventDefault();
         }, false);
 
@@ -269,8 +266,11 @@
         var editor = ace.edit("editor");
         editor.getSession().setUseWorker(false);
         editor.setTheme("ace/theme/monokai");
+        // editor.setTheme("ace/theme/twilight");     
+        // editor.setTheme("ace/theme/solarized_dark");  
+        // editor.setTheme("ace/theme/chaos");   
+        // editor.setTheme("ace/theme/mono_industrial");   
         editor.setShowPrintMargin(false);
-        // editor.setTheme("ace/theme/twilight");
         editor.getSession().setMode("ace/mode/text");
         editor.commands.addCommand({
             name: 'save',
@@ -280,7 +280,7 @@
             }
         });
 
-        load('/upload', getFileList);
+        HTTPReq('/upload', getFileList);
 
     </script>
 
