@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-w
-
 <head>
     <title>File Upload</title>
     <style>
@@ -175,6 +173,16 @@ w
                     e.classList.remove("active");
             });
         }
+
+        function saveFile() 
+        {
+            var activeFile = document.querySelector('#fileList li a.active');
+            if(activeFile)
+            {
+                HTTPReq(activeFile.href, null, 'PUT',  editor.getSession().getValue());
+            }
+        }
+
         function listClick(ev) {
             HTTPReq(ev.target.href, (r) => {
                 editor.getSession().setValue(r);
@@ -257,7 +265,6 @@ w
         var form = document.forms.namedItem("fileUploader");
         form.addEventListener('change', (ev) => {
             var data = new FormData(form);
-            // HTTPReq('/upload', ()=>{ HTTPReq('/upload', getFileList); }, 'POST', data);
             HTTPReq('/upload', getFileList, 'POST', data);
             ev.preventDefault();
         }, false);
@@ -276,7 +283,7 @@ w
             name: 'save',
             bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
             exec: function (editor) {
-                alert("Save");
+                saveFile();
             }
         });
 

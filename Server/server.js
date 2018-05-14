@@ -2,9 +2,12 @@
 var express = require('express');
 var http = require('http');
 var formidable = require('formidable');
+var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
 var app = express();
+
+app.use(bodyParser.text());
 
 var port = 8080;
 
@@ -37,14 +40,14 @@ app.put('/uploads/:file', function (req, res) {
     var fp = path.join(__dirname, '/uploads/', req.params.file);
     console.log("updating: " + fp);
 
-    var data = "Hellow world"; // req.body
+    var data = req.body;
 
     fs.writeFile(fp, data, (err) => {
         if (err) {
             res.status(500);
             res.json({ 'success': false });
         } else {
-            res.status(200).json(dirList());
+            res.status(200).json({ 'success': true });
         }
     });
 });
